@@ -1,0 +1,8 @@
+.git
+_gitPush.sh
+.idea
+gen
+*.tar.gz
+vendor
+**/*.min.css
+**/*.min.js

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+sRepository="gueff/myMVC_module_OpenApi";
+sGitUser="";
+sGitToken="";
+sBranch="";
+
+#--------------------
+
+git remote set-url origin "https://$sGitUser:$sGitToken@github.com/$sRepository"
+
+# update
+git pull;
+git add -A;
+
+# commit
+git commit -m "update";
+git push origin "$sBranch";
+
