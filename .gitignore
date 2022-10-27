@@ -1,5 +1,7 @@
 .git
 _gitPush.sh
+_gitPush.sh.example
+_phanlistcreate.sh
 .idea
 gen
 *.tar.gz
