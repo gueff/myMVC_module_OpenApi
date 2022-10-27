@@ -1,4 +1,6 @@
 
+<img src="https://github.com/gueff/myMVC_module_OpenApi/actions/workflows/super-linter.yml/badge.svg">
+
 ## Install
 
 ~~~bash
