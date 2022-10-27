@@ -1,8 +1,11 @@
 
+# myMVC_module_OpenApi
+
 <img src="https://github.com/gueff/myMVC_module_OpenApi/actions/workflows/super-linter.yml/badge.svg">
 
-## Install
+## Installation
 
+_git clone_  
 ~~~bash
 cd /modules/;
 
