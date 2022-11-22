@@ -32,10 +32,10 @@ class Generate
         $sCacheKey = Strings::seofy(__FUNCTION__) . '.' . $sSubDirName . '.' . md5_file($sOpenApiFile);
         $sDir = File::secureFilePath(Config::get_MVC_MODULE_CURRENT_DATATYPE_DIR() . '/' . $sSubDirName);
 
-//        if (false === empty(Cache::getCache($sCacheKey)) && true === file_exists($sDir))
-//        {
-//            return false;
-//        }
+        if (false === empty(Cache::getCache($sCacheKey)) && true === file_exists($sDir))
+        {
+            return false;
+        }
 
         // array of yaml file
         $aYaml = self::getArrayOfYaml($sOpenApiFile);
