@@ -12,7 +12,7 @@ class Generate
 {
     /**
      * @example
-     * Generate::classesOnOpenapi3yaml(
+     * Generate::DTClassesOnOpenapi3yaml(
      *      'https://test.api.mediafinanz.de/api/openapi.yaml',
      *      'API'
      * );
