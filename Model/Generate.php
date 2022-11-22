@@ -4,6 +4,7 @@ namespace OpenApi\Model;
 
 use MVC\Cache;
 use MVC\Config;
+use MVC\Debug;
 use MVC\File;
 use MVC\Strings;
 
@@ -31,10 +32,10 @@ class Generate
         $sCacheKey = Strings::seofy(__FUNCTION__) . '.' . $sSubDirName . '.' . md5_file($sOpenApiFile);
         $sDir = File::secureFilePath(Config::get_MVC_MODULE_CURRENT_DATATYPE_DIR() . '/' . $sSubDirName);
 
-        if (false === empty(Cache::getCache($sCacheKey)) && true === file_exists($sDir))
-        {
-            return false;
-        }
+//        if (false === empty(Cache::getCache($sCacheKey)) && true === file_exists($sDir))
+//        {
+//            return false;
+//        }
 
         // array of yaml file
         $aYaml = self::getArrayOfYaml($sOpenApiFile);
@@ -87,33 +88,46 @@ class Generate
                 $mVar = self::getSchemaItemPropertyType($aPropertySpecs);
                 $mValue = self::getSchemaItemPropertyValue($aPropertySpecs);
 
-                $sRef = get($aPropertySpecs['$ref']);
-                $sItemsRef = get($aPropertySpecs['items']['$ref']);
+                TYPE_OBJECT: {
+                    $sRef = get($aPropertySpecs['$ref']);
 
-                // var is type $ref; check type of ref
-                if (null !== $sRef)
-                {
-                    $sNameOfRef = current(array_reverse(explode('/', $sRef)));
-
-                    if ('object' === get($aSchema[$sNameOfRef]['type']))
+                    // var is type $ref; check type of ref
+                    if (null !== $sRef)
                     {
-                        $mVar = '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sNameOfRef;
-                        $mValue = "$mVar::create()";
+                        $sNameOfRef = current(array_reverse(explode('/', $sRef)));
+
+                        if ('object' === get($aSchema[$sNameOfRef]['type']))
+                        {
+                            $mVar = '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sNameOfRef;
+                            $mValue = "$mVar::create()";
+                        }
+                        elseif ('array' === get($aSchema[$sNameOfRef]['type']))
+                        {
+                            $sSubItemsRef = current(array_reverse(explode('/', get($aSchema[$sNameOfRef]['items']['$ref']))));
+                            $mVar = '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sSubItemsRef . '[]';
+                            $mValue = '$this->add_' . $sPropertyName . '(' . '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sNameOfRef . '::create());';
+                        }
                     }
-                    elseif ('array' === get($aSchema[$sNameOfRef]['type']))
+                }
+
+                TYPE_ARRAY_OF_OBJECT: {
+                    $sItemsRef = get($aPropertySpecs['items']['$ref']);
+
+                    // var is array of type $ref
+                    if ($mVar === 'array' && null !== $sItemsRef)
                     {
-                        $sSubItemsRef = current(array_reverse(explode('/', get($aSchema[$sNameOfRef]['items']['$ref']))));
-                        $mVar = '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sSubItemsRef . '[]';
+                        $sNameOfRef = current(array_reverse(explode('/', $sItemsRef)));
+                        $mVar = '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sNameOfRef . '[]';
                         $mValue = '$this->add_' . $sPropertyName . '(' . '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sNameOfRef . '::create());';
                     }
                 }
 
-                // var is array of type $ref
-                if ($mVar === 'array' && null !== $sItemsRef)
-                {
-                    $sNameOfRef = current(array_reverse(explode('/', $sItemsRef)));
-                    $mVar = '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sNameOfRef . '[]';
-                    $mValue = '$this->add_' . $sPropertyName . '(' . '\\' . $aDataType['class'][$sName]['namespace'] . '\\' . $sNameOfRef . '::create());';
+                TYPE_UNSPECIFIC: {
+                    if (true === self::getItemsOfRef($aPropertySpecs))
+                    {
+                        $mVar = 'null';
+                        $mValue = 'null';
+                    }
                 }
 
                 $aDataType['class'][$sName]['property'][$sPropertyName]['key'] = $sPropertyName;
@@ -128,6 +142,25 @@ class Generate
         Cache::saveCache($sCacheKey, $aDataType);
 
         return true;
+    }
+
+    /**
+     * @param array $aPropertySpecs
+     * @return bool
+     */
+    protected static function getItemsOfRef(array $aPropertySpecs = array())
+    {
+        $aPossible = array('oneOf', 'allOf', 'anyOf');
+
+        foreach($aPossible as $sName)
+        {
+            if(array_key_exists($sName, $aPropertySpecs))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
