@@ -16,13 +16,14 @@ class Generate
      *      'https://test.api.mediafinanz.de/api/openapi.yaml',
      *      'API'
      * );
-     * @param $sOpenApiFile required
-     * @param $sSubDirName required
-     * @param $bUnlinkDir
+     * @param string $sOpenApiFile required
+     * @param string $sSubDirName required
+     * @param bool $bUnlinkDir
+     * @param bool $bValueFromExample
      * @return void
      * @throws \ReflectionException
      */
-    public static function DTClassesOnOpenapi3yaml($sOpenApiFile = '', $sSubDirName = '', $bUnlinkDir = true)
+    public static function DTClassesOnOpenapi3yaml($sOpenApiFile = '', $sSubDirName = '', $bUnlinkDir = true, $bValueFromExample = true)
     {
         if (true === empty($sOpenApiFile) || true === empty($sSubDirName))
         {
@@ -32,7 +33,7 @@ class Generate
         $sCacheKey = Strings::seofy(__FUNCTION__) . '.' . $sSubDirName . '.' . md5_file($sOpenApiFile);
         $sDir = File::secureFilePath(Config::get_MVC_MODULE_CURRENT_DATATYPE_DIR() . '/' . $sSubDirName);
 
-        if (false === empty(Cache::getCache($sCacheKey)) && true === file_exists($sDir))
+        if (false === empty(Cache::getCache($sCacheKey)) && true === file_exists($sDir) && false === $bUnlinkDir)
         {
             return false;
         }
@@ -86,7 +87,9 @@ class Generate
             foreach ($aProperty as $sPropertyName => $aPropertySpecs)
             {
                 $mVar = self::getSchemaItemPropertyType($aPropertySpecs);
-                $mValue = self::getSchemaItemPropertyValue($aPropertySpecs);
+                $mValue = (true === $bValueFromExample)
+                    ? self::getSchemaItemPropertyValue($aPropertySpecs)
+                    : null;
 
                 TYPE_OBJECT: {
                     $sRef = get($aPropertySpecs['$ref']);
