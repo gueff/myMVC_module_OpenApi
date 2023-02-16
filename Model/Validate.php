@@ -3,10 +3,15 @@
 namespace OpenApi\Model;
 
 use HKarlstrom\Middleware\OpenApiValidation;
+use MVC\Cache;
+use MVC\Config;
 use MVC\DataType\DTRequestCurrent;
+use MVC\Debug;
 use MVC\Error;
+use MVC\Log;
 use MVC\Request;
 use MVC\Route;
+use MVC\Strings;
 use OpenApi\DataType\DTValidate;
 use OpenApi\DataType\DTValidateMessage;
 use OpenApi\DataType\DTValidateRequestResponse;
@@ -15,7 +20,7 @@ class Validate
 {
     /**
      * @param \MVC\DataType\DTRequestCurrent|null $oDTRequestCurrent
-     * @param                                     $sYamlFileAbs
+     * @param                                     $sYamlFileAbs file | URL
      * @return \OpenApi\DataType\DTValidateRequestResponse
      * @example {"bSuccess":true,"aMessage":[],"aValidationResult":[]}
      * @example {"bSuccess":false,"aMessage":[],"aValidationResult":[{"name":"data.1.contact.city","code":"error_type","value":123,"in":"body","expected":"string","used":"integer"}]}
@@ -39,8 +44,24 @@ class Validate
             );
         }
 
-        // yaml missing
-        if (false === file_exists($sYamlFileAbs))
+        // $sYamlFileAbs is URL
+        if (true === (boolean) filter_var($sYamlFileAbs, FILTER_VALIDATE_URL))
+        {
+            $sCacheKey = Strings::seofy($sYamlFileAbs);
+            Cache::autoDeleteCache($sCacheKey, get(Config::get_MVC_CACHE_CONFIG()['iDeleteAfterMinutes'], 1440));
+            $sContent = Cache::getCache($sCacheKey);
+
+            if (true === empty($sContent))
+            {
+                $sContent = file_get_contents($sYamlFileAbs);
+                Cache::saveCache($sCacheKey, $sContent);
+            }
+
+            // finally overwrite and wrap into array, as OpenApiValidation requires it that way
+            $sYamlFileAbs = array($sContent);
+        }
+        // $sYamlFileAbs is file, but missing
+        elseif (false === file_exists($sYamlFileAbs))
         {
             $sMessage = 'file does not exist: ' . $sYamlFileAbs;
             Error::error($sMessage);

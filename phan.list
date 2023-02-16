@@ -1,6 +1,6 @@
-DataType/DTValidateRequestResponse.php
 DataType/DTValidateMessage.php
-Model/Generate.php
+DataType/DTValidateRequestResponse.php
+Model/PsrRequest.php
 Model/PsrUri.php
 Model/Validate.php
-Model/PsrRequest.php
+Model/Generate.php
