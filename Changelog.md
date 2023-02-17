@@ -23,6 +23,8 @@ Types of changes:
 
 **added**  
 
+- check the request content body type "json"
+- try/catch blocks with error logs
 - `\OpenApi\Model\Validate::request`: parameter `$sYamlFileAbs` may now be either a file or an URL; If URL, it will be cached locally according to `iDeleteAfterMinutes` Cache Settings or 1440 min if no Cache settings exists 
  
 **changed**
