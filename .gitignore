@@ -1,10 +1,10 @@
 .git
+.idea
 *.sh
 _gitPull.sh
 _gitPush.sh
 _gitPush.sh.example
 _phanlistcreate.sh
-.idea
 gen
 *.tar.gz
 vendor

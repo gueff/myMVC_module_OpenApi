@@ -1,13 +1,18 @@
 
 # myMVC_module_OpenApi
 
-<!--
-<img src="https://github.com/gueff/myMVC_module_OpenApi/actions/workflows/super-linter.yml/badge.svg">
--->
+## Requirements
+
+- Linux
+- php >=7.4
+- myMVC
+    - myMVC 3.2.x: https://github.com/gueff/myMVC/tree/3.2.x
+    - ZIP: https://github.com/gueff/myMVC/archive/refs/heads/3.2.x.zip
+    - Doku: https://mymvc.ueffing.net/
 
 ## Installation
 
-_git clone_  
+_git clone_
 ~~~bash
 cd /modules/;
 
