@@ -22,21 +22,23 @@ Types of changes:
 ### In Progress
 
 **added**  
-
-- check the request content body type "json"
-- try/catch blocks with error logs
-- `\OpenApi\Model\Validate::request`: parameter `$sYamlFileAbs` may now be either a file or an URL; If URL, it will be cached locally according to `iDeleteAfterMinutes` Cache Settings or 1440 min if no Cache settings exists 
- 
 **changed**
-
 **deprecated**
-
 **removed**  
-
 **fixed**  
-
 **security**
 
 ---
 
 ## [Releases]
+
+### [1.0.0] - 2023-05-02, https://github.com/gueff/myMVC_module_OpenApi/releases/tag/1.0.0
+
+**added**
+
+- check the request content body type "json"
+- try/catch blocks with error logs
+- `\OpenApi\Model\Validate::request`: parameter `$sYamlFileAbs` may now be either a file or an URL; If URL, it will be cached locally according to `iDeleteAfterMinutes` Cache Settings or 1440 min if no Cache settings exists 
+ 
+
+

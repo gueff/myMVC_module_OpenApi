@@ -5,6 +5,7 @@ _gitPull.sh
 _gitPush.sh
 _gitPush.sh.example
 _phanlistcreate.sh
+Changelog.md
 gen
 *.tar.gz
 vendor
