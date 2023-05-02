@@ -12,6 +12,7 @@ use MVC\Convert;
 use MVC\DataType\DTRequestCurrent;
 use MVC\Debug;
 use MVC\Error;
+use MVC\File;
 use MVC\Log;
 use MVC\Request;
 use MVC\Route;
@@ -48,21 +49,16 @@ class Validate
             );
         }
 
-        // $sYamlFileAbs is URL
+        // $sYamlFileAbs is URL: download and save to cache
         if (true === (boolean) filter_var($sYamlFileAbs, FILTER_VALIDATE_URL))
         {
-            $sCacheKey = Strings::seofy($sYamlFileAbs);
-            Cache::autoDeleteCache($sCacheKey, get(Config::get_MVC_CACHE_CONFIG()['iDeleteAfterMinutes'], 1440));
-            $sContent = Cache::getCache($sCacheKey);
+            $sYamlFileAbs = File::secureFilePath(Cache::$sCacheDir . '/' . Strings::seofy($sYamlFileAbs) . '.yaml');
 
-            if (true === empty($sContent))
+            if (false === file_exists($sYamlFileAbs))
             {
                 $sContent = file_get_contents($sYamlFileAbs);
-                Cache::saveCache($sCacheKey, $sContent);
+                file_put_contents($sYamlFileAbs, $sContent);
             }
-
-            // finally overwrite and wrap into array, as OpenApiValidation requires it that way
-            $sYamlFileAbs = array($sContent);
         }
         // $sYamlFileAbs is file, but missing
         elseif (false === file_exists($sYamlFileAbs))
