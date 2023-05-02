@@ -43,7 +43,7 @@ use OpenApi\Model\Validate;
 // validate against openapi URL
 $oDTValidateRequestResponse = Validate::request(
     $oDTRequestCurrent,
-    'https://api.mediafinanz.de/api/openapi.yaml'
+    'https://example.com/api/openapi.yaml'
 );
 
 header('Content-Type: application/json');
