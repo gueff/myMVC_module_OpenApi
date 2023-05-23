@@ -11,6 +11,7 @@ use MVC\Config;
 use MVC\DataType\DTRequestCurrent;
 use MVC\Error;
 use MVC\File;
+use MVC\Log;
 use MVC\Request;
 use MVC\Route;
 use MVC\Strings;
@@ -61,6 +62,7 @@ class Validate
         {
             $sYamlSource = self::saveAsFile($sYamlSource);
         }
+        Log::write($sYamlSource, 'debug.log');
 
         // $sYamlSource is file, but missing
         if (false === file_exists($sYamlSource))
@@ -90,36 +92,41 @@ class Validate
             return $oDTValidateRequestResponse;
         }
 
-        // check the request content type
+        // check the request content type...
         try {
             $oOpenApiReader = new OpenApiReader($sYamlSource);
-
-            // get the expected type of request
-            $sExpectedType = $oOpenApiReader->getOperationRequestBody(
+            $oRequestBody = $oOpenApiReader->getOperationRequestBody(
                 $oDTRequestCurrent->get_path(),
                 strtolower($oDTRequestCurrent->get_requestmethod())
-            )->getContent()->type;
+            );
 
-            // check content type "json"
-            if (true === (boolean) stristr($sExpectedType, 'json') && false === Strings::isJson($oDTRequestCurrent->get_input()))
+            // ...if there is any content body
+            if (null !== $oRequestBody)
             {
-                $sMessage = 'content type has to be valid `' . $sExpectedType . '`';
-                Error::error(json_last_error_msg() . ' on RequestBody of ' . $oDTRequestCurrent->get_path() . ': ' . $sMessage);
-                Error::notice('abort validation of request due to error');
-                $oDTValidateRequestResponse
-                    ->set_bSuccess(false)
-                    ->add_aMessage(
-                        DTValidateMessage::create()
-                            ->set_sSubject('Error')
-                            ->set_sBody(json_last_error_msg())
-                    )
-                    ->add_aMessage(
-                        DTValidateMessage::create()
-                            ->set_sSubject('Notice')
-                            ->set_sBody($sMessage)
-                    );
+                // get the expected type of request content
+                $sExpectedType = $oRequestBody->getContent()->type;
 
-                return $oDTValidateRequestResponse;
+                // check content type "json"
+                if (true === (boolean) stristr($sExpectedType, 'json') && false === Strings::isJson($oDTRequestCurrent->get_input()))
+                {
+                    $sMessage = 'content type has to be valid `' . $sExpectedType . '`';
+                    Error::error(json_last_error_msg() . ' on RequestBody of ' . $oDTRequestCurrent->get_path() . ': ' . $sMessage);
+                    Error::notice('abort validation of request due to error');
+                    $oDTValidateRequestResponse
+                        ->set_bSuccess(false)
+                        ->add_aMessage(
+                            DTValidateMessage::create()
+                                ->set_sSubject('Error')
+                                ->set_sBody(json_last_error_msg())
+                        )
+                        ->add_aMessage(
+                            DTValidateMessage::create()
+                                ->set_sSubject('Notice')
+                                ->set_sBody($sMessage)
+                        );
+
+                    return $oDTValidateRequestResponse;
+                }
             }
         } catch (\Exception $oException) {
             Error::exception($oException->getMessage());
