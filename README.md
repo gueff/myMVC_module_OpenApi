@@ -16,7 +16,7 @@ _git clone_
 ~~~bash
 cd /modules/;
 
-git clone --branch 1.0.x \
+git clone --branch 1.1.x \
 https://github.com/gueff/myMVC_module_OpenApi.git \
 OpenApi;
 ~~~
@@ -48,4 +48,19 @@ $oDTValidateRequestResponse = Validate::request(
 
 header('Content-Type: application/json');
 echo json_encode(Convert::objectToArray($oDTValidateRequestResponse));
+~~~
+
+## Get Logs
+
+Logs are fired to Events.
+
+Available events are:
+
+- `myMVC_module_OpenApi::sYamlSource`
+
+_listen to event and write its content to a logfile_    
+~~~php
+\MVC\Event::bind('myMVC_module_OpenApi::sYamlSource', function($sContent){
+    \MVC\Log::write($sContent, 'openapi.log');
+});
 ~~~

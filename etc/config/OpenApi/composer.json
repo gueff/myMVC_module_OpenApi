@@ -1,9 +1,9 @@
 {
   "require": {
-    "zircote/swagger-php": "4.5.1",
+    "zircote/swagger-php": "4.7.10",
     "cebe/php-openapi": "1.7.0",
     "opis/string": "2.0.1",
-    "hkarlstrom/openapi-reader": "0.4.1",
-    "hkarlstrom/openapi-validation-middleware": "0.4.2"
+    "hkarlstrom/openapi-reader": "0.5",
+    "hkarlstrom/openapi-validation-middleware": "0.5.2"
   }
 }

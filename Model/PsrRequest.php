@@ -1,16 +1,5 @@
 <?php
-/**
- * PsrRequest.php
- *
- * @package myMVC
- * @copyright ueffing.net
- * @author Guido K.B.W. Üffing <info@ueffing.net>
- * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING
- */
 
-/**
- * @name $PsrModel
- */
 namespace OpenApi\Model;
 
 use MVC\DataType\DTRequestCurrent;
@@ -22,10 +11,13 @@ use Psr\Http\Message\UriInterface;
 class PsrRequest implements ServerRequestInterface
 {
     /**
-     * @var \MVC\DataType\DTRequestCurrent
+     * @var DTRequestCurrent
      */
     protected $oDTRequestCurrent;
 
+    /**
+     * @param DTRequestCurrent $oDTRequestCurrent
+     */
     public function __construct(DTRequestCurrent $oDTRequestCurrent)
     {
         $this->oDTRequestCurrent = $oDTRequestCurrent;
@@ -74,12 +66,12 @@ class PsrRequest implements ServerRequestInterface
      * immutability of the message, and MUST return an instance that has the
      * updated cookie values.
      *
-     * @param array $cookies Array of key/value pairs representing cookies.
+     * @param array $aCookie Array of key/value pairs representing cookies.
      * @return static
      */
-    public function withCookieParams(array $cookies)
+    public function withCookieParams(array $aCookie)
     {
-        $_COOKIE = $cookies;
+        $_COOKIE = $aCookie;
     }
 
     /**
@@ -120,13 +112,13 @@ class PsrRequest implements ServerRequestInterface
      * immutability of the message, and MUST return an instance that has the
      * updated query string arguments.
      *
-     * @param array $query Array of query string arguments, typically from
+     * @param array $aQuery Array of query string arguments, typically from
      *     $_GET.
      * @return static
      */
-    public function withQueryParams(array $query)
+    public function withQueryParams(array $aQuery)
     {
-        $_GET = $query;
+        $_GET = $aQuery;
     }
 
     /**
@@ -153,13 +145,13 @@ class PsrRequest implements ServerRequestInterface
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
+     * @param array $aUploadedFiles An array tree of UploadedFileInterface instances.
      * @return static
      * @throws \InvalidArgumentException if an invalid structure is provided.
      */
-    public function withUploadedFiles(array $uploadedFiles)
+    public function withUploadedFiles(array $aUploadedFiles)
     {
-
+        ;
     }
 
     /**
@@ -210,21 +202,21 @@ class PsrRequest implements ServerRequestInterface
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param null|array|object $data The deserialized body data. This will
+     * @param null|array|object $mData The deserialized body data. This will
      *     typically be in an array or object.
      * @return static
      * @throws \InvalidArgumentException if an unsupported argument type is
      *     provided.
      * @throws \ReflectionException
      */
-    public function withParsedBody($data)
+    public function withParsedBody($mData)
     {
         if ('POST' === Request::getCurrentRequest()->get_requestmethod())
         {
             return $_POST;
         }
 
-        return $data;
+        return $mData;
     }
 
     /**
@@ -254,15 +246,15 @@ class PsrRequest implements ServerRequestInterface
      * This method obviates the need for a hasAttribute() method, as it allows
      * specifying a default value to return if the attribute is not found.
      *
-     * @see getAttributes()
-     * @param string $name The attribute name.
-     * @param mixed $default Default value to return if the attribute does not exist.
+     * @param string $sAttributeName The attribute name.
+     * @param mixed $sAttributeDefaultValue Default value to return if the attribute does not exist.
      * @return mixed
      * @throws \ReflectionException
+     *@see getAttributes()
      */
-    public function getAttribute($name, $default = null)
+    public function getAttribute($sAttributeName, $sAttributeDefaultValue = null)
     {
-        return get($this->getAttributes()[$name], $default);
+        return get($this->getAttributes()[$sAttributeName], $sAttributeDefaultValue);
     }
 
     /**
@@ -275,12 +267,12 @@ class PsrRequest implements ServerRequestInterface
      * immutability of the message, and MUST return an instance that has the
      * updated attribute.
      *
-     * @see getAttributes()
-     * @param string $name The attribute name.
-     * @param mixed $value The value of the attribute.
+     * @param string $sAttributeName The attribute name.
+     * @param mixed $sAttributeValue The value of the attribute.
      * @return static
+     *@see getAttributes()
      */
-    public function withAttribute($name, $value)
+    public function withAttribute($sAttributeName, $sAttributeValue)
     {
         ;
     }
@@ -295,105 +287,172 @@ class PsrRequest implements ServerRequestInterface
      * immutability of the message, and MUST return an instance that removes
      * the attribute.
      *
-     * @see getAttributes()
-     * @param string $name The attribute name.
+     * @param string $sAttributeName The attribute name.
      * @return array
      * @throws \ReflectionException
+     *@see getAttributes()
      */
-    public function withoutAttribute($name)
+    public function withoutAttribute($sAttributeName)
     {
         $aAttribute = $this->getAttributes();
 
-        if (isset($aAttribute[$name]))
+        if (isset($aAttribute[$sAttributeName]))
         {
-            $aAttribute[$name] = null;
-            unset($aAttribute[$name]);
+            $aAttribute[$sAttributeName] = null;
+            unset($aAttribute[$sAttributeName]);
         }
 
         return $aAttribute;
     }
 
+    /**
+     * @return void
+     */
     public function getProtocolVersion()
     {
         // TODO: Implement getProtocolVersion() method.
     }
 
-    public function withProtocolVersion($version)
+    /**
+     * @param $sVersion
+     * @return void
+     */
+    public function withProtocolVersion($sVersion)
     {
         // TODO: Implement withProtocolVersion() method.
     }
 
+    /**
+     * @return array|\string[][]
+     */
     public function getHeaders()
     {
         return Request::getHeaderArray();
     }
 
-    public function hasHeader($name)
+    /**
+     * @param $sHeaderName
+     * @return bool
+     */
+    public function hasHeader($sHeaderName)
     {
-        return isset($this->getHeaders()[$name]);
+        return isset($this->getHeaders()[$sHeaderName]);
     }
 
-    public function getHeader($name)
+    /**
+     * @param $sHeaderName
+     * @return array|string[]
+     */
+    public function getHeader($sHeaderName)
     {
-        return (array) get($this->getHeaders()[$name], array());
+        return (array) get($this->getHeaders()[$sHeaderName], array());
     }
 
-    public function getHeaderLine($name)
+    /**
+     * @param $sHeaderLine
+     * @return void
+     */
+    public function getHeaderLine($sHeaderLine)
     {
         // TODO: Implement getHeaderLine() method.
     }
 
-    public function withHeader($name, $value)
+    /**
+     * @param $sHeaderName
+     * @param $sHeaderValue
+     * @return void
+     */
+    public function withHeader($sHeaderName, $sHeaderValue)
     {
         // TODO: Implement withHeader() method.
     }
 
-    public function withAddedHeader($name, $value)
+    /**
+     * @param $sHeaderName
+     * @param $sHeaderValue
+     * @return void
+     */
+    public function withAddedHeader($sHeaderName, $sHeaderValue)
     {
         // TODO: Implement withAddedHeader() method.
     }
 
-    public function withoutHeader($name)
+    /**
+     * @param $sHeaderName
+     * @return void
+     */
+    public function withoutHeader($sHeaderName)
     {
         // TODO: Implement withoutHeader() method.
     }
 
+    /**
+     * @return StreamInterface|string
+     * @throws \ReflectionException
+     */
     public function getBody()
     {
         return $this->oDTRequestCurrent->get_input();
     }
 
-    public function withBody(StreamInterface $body)
+    /**
+     * @param StreamInterface $oStreamInterface
+     * @return void
+     */
+    public function withBody(StreamInterface $oStreamInterface)
     {
         // TODO: Implement withBody() method.
     }
 
+    /**
+     * @return void
+     */
     public function getRequestTarget()
     {
         // TODO: Implement getRequestTarget() method.
     }
 
-    public function withRequestTarget($requestTarget)
+    /**
+     * @param $sRequestTarget
+     * @return void
+     */
+    public function withRequestTarget($sRequestTarget)
     {
         // TODO: Implement withRequestTarget() method.
     }
 
+    /**
+     * @return string
+     * @throws \ReflectionException
+     */
     public function getMethod()
     {
         return $this->oDTRequestCurrent->get_requestmethod();
     }
 
-    public function withMethod($method)
+    /**
+     * @param $sMethod
+     * @return void
+     */
+    public function withMethod($sMethod)
     {
         // TODO: Implement withMethod() method.
     }
 
+    /**
+     * @return PsrUri
+     */
     public function getUri()
     {
         return new PsrUri($this->oDTRequestCurrent);
     }
 
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    /**
+     * @param UriInterface $oUriInterface
+     * @param $bPreserveHost
+     * @return void
+     */
+    public function withUri(UriInterface $oUriInterface, $bPreserveHost = false)
     {
         // TODO: Implement withUri() method.
     }

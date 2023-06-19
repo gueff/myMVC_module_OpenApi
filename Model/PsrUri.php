@@ -1,16 +1,5 @@
 <?php
-/**
- * PsrUri.php
- *
- * @package myMVC
- * @copyright ueffing.net
- * @author Guido K.B.W. Üffing <info@ueffing.net>
- * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING
- */
 
-/**
- * @name $PsrModel
- */
 namespace OpenApi\Model;
 
 use MVC\DataType\DTRequestCurrent;
@@ -192,11 +181,11 @@ class PsrUri implements UriInterface
      *
      * An empty scheme is equivalent to removing the scheme.
      *
-     * @param string $scheme The scheme to use with the new instance.
+     * @param string $sScheme The scheme to use with the new instance.
      * @return static A new instance with the specified scheme.
      * @throws \InvalidArgumentException for invalid or unsupported schemes.
      */
-    public function withScheme($scheme){}
+    public function withScheme($sScheme){}
 
     /**
      * Return an instance with the specified user information.
@@ -208,11 +197,11 @@ class PsrUri implements UriInterface
      * user; an empty string for the user is equivalent to removing user
      * information.
      *
-     * @param string $user The user name to use for authority.
-     * @param null|string $password The password associated with $user.
+     * @param string $sUser The user name to use for authority.
+     * @param null|string $mPassword The password associated with $user.
      * @return static A new instance with the specified user information.
      */
-    public function withUserInfo($user, $password = null){}
+    public function withUserInfo($sUser, $mPassword = null){}
 
     /**
      * Return an instance with the specified host.
@@ -222,11 +211,11 @@ class PsrUri implements UriInterface
      *
      * An empty host value is equivalent to removing the host.
      *
-     * @param string $host The hostname to use with the new instance.
+     * @param string $sHost The hostname to use with the new instance.
      * @return static A new instance with the specified host.
      * @throws \InvalidArgumentException for invalid hostnames.
      */
-    public function withHost($host){}
+    public function withHost($sHost){}
 
     /**
      * Return an instance with the specified port.
@@ -240,12 +229,12 @@ class PsrUri implements UriInterface
      * A null value provided for the port is equivalent to removing the port
      * information.
      *
-     * @param null|int $port The port to use with the new instance; a null value
+     * @param null|int $mPort The port to use with the new instance; a null value
      *     removes the port information.
      * @return static A new instance with the specified port.
      * @throws \InvalidArgumentException for invalid ports.
      */
-    public function withPort($port){}
+    public function withPort($mPort){}
 
     /**
      * Return an instance with the specified path.
@@ -265,11 +254,11 @@ class PsrUri implements UriInterface
      * Users can provide both encoded and decoded path characters.
      * Implementations ensure the correct encoding as outlined in getPath().
      *
-     * @param string $path The path to use with the new instance.
+     * @param string $sPath The path to use with the new instance.
      * @return static A new instance with the specified path.
      * @throws \InvalidArgumentException for invalid paths.
      */
-    public function withPath($path){}
+    public function withPath($sPath){}
 
     /**
      * Return an instance with the specified query string.
@@ -282,11 +271,11 @@ class PsrUri implements UriInterface
      *
      * An empty query string value is equivalent to removing the query string.
      *
-     * @param string $query The query string to use with the new instance.
+     * @param string $sQuery The query string to use with the new instance.
      * @return static A new instance with the specified query string.
      * @throws \InvalidArgumentException for invalid query strings.
      */
-    public function withQuery($query){}
+    public function withQuery($sQuery){}
 
     /**
      * Return an instance with the specified URI fragment.
@@ -299,10 +288,10 @@ class PsrUri implements UriInterface
      *
      * An empty fragment value is equivalent to removing the fragment.
      *
-     * @param string $fragment The fragment to use with the new instance.
+     * @param string $sFragment The fragment to use with the new instance.
      * @return static A new instance with the specified fragment.
      */
-    public function withFragment($fragment){}
+    public function withFragment($sFragment){}
 
     /**
      * Return the string representation as a URI reference.

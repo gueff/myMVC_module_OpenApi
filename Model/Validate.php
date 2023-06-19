@@ -10,12 +10,12 @@ use MVC\Cache;
 use MVC\Config;
 use MVC\DataType\DTRequestCurrent;
 use MVC\Error;
+use MVC\Event;
 use MVC\File;
 use MVC\Log;
 use MVC\Request;
 use MVC\Route;
 use MVC\Strings;
-use OpenApi\DataType\DTValidate;
 use OpenApi\DataType\DTValidateMessage;
 use OpenApi\DataType\DTValidateRequestResponse;
 
@@ -62,7 +62,8 @@ class Validate
         {
             $sYamlSource = self::saveAsFile($sYamlSource);
         }
-        Log::write($sYamlSource, 'debug.log');
+
+        Event::run('myMVC_module_OpenApi::sYamlSource', $sYamlSource);
 
         // $sYamlSource is file, but missing
         if (false === file_exists($sYamlSource))

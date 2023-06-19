@@ -10,7 +10,7 @@ require_once realpath(__DIR__ . '/../../../../../') . '/application/config/util/
 
 // Classes created by this script are placed into folder:
 // `/modules/{module}/DataType/`
-// @see https://mymvc.ueffing.net/3.1.x/generating-datatype-classes
+// @see https://mymvc.ueffing.net/3.2.x/generating-datatype-classes
 
 $sCurrentModuleName = basename(realpath(__DIR__ . '/../../../'));
 $sDataTypeDir = realpath(__DIR__ . '/../../../') . '/DataType/';
