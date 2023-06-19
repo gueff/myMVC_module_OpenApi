@@ -12,7 +12,6 @@ use MVC\DataType\DTRequestCurrent;
 use MVC\Error;
 use MVC\Event;
 use MVC\File;
-use MVC\Log;
 use MVC\Request;
 use MVC\Route;
 use MVC\Strings;
