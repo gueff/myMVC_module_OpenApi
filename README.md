@@ -50,10 +50,22 @@ header('Content-Type: application/json');
 echo json_encode(Convert::objectToArray($oDTValidateRequestResponse));
 ~~~
 
-_auto-creating myMVC Routes from openapi file_  
+**auto-creating myMVC Routes from openapi file**
+
+_All Routes lead to their given `operationId`, set in openapi_    
 ~~~php
 \OpenApi\Model\Route::autoCreateFromOpenApiFile(
-    '/absolute/path/to/openapi.yaml'
+    '/absolute/path/to/openapi.yaml',
+    '\Foo\Controller\Api'
+);
+~~~
+
+_All Routes lead explicitely to `Api::delegate()`_      
+~~~php
+\OpenApi\Model\Route::autoCreateFromOpenApiFile(
+    '/absolute/path/to/openapi.yaml',
+    '\Foo\Controller\Api',
+    'delegate'
 );
 ~~~
 

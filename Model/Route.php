@@ -3,15 +3,19 @@
 namespace OpenApi\Model;
 
 use HKarlstrom\OpenApiReader\OpenApiReader;
+use MVC\Error;
 
 class Route
 {
     /**
-     * @usage \OpenApi\Model\Route::autoCreateFromOpenApiFile( OPENAPI_FILE_ABSOLUTE );
+     * @usage \OpenApi\Model\Route::autoCreateFromOpenApiFile( OPENAPI_FILE_ABSOLUTE, '\Foo\Controller\Api', 'delegate' );
      * @param string $sOpenApiFileAbs
-     * @return void
+     * @param string $sClass e.g. '\Foo\Controller\Api'
+     * @param string $sClassMethod optional; if set, all routes will lead to that method. If not, route will lead to path's operationId from openapi
+     * @return bool success
+     * @throws \ReflectionException
      */
-    public static function autoCreateFromOpenApiFile(string $sOpenApiFileAbs = '')
+    public static function autoCreateFromOpenApiFile(string $sOpenApiFileAbs = '', string $sClass = '', string $sClassMethod = '')
     {
         // read openapi file and convert to array
         $aOpenApiReader = current(
@@ -26,12 +30,22 @@ class Route
         // finally: dynamically create routes from openapi
         foreach ($aRawPath as $sPath => $aPath)
         {
-            $sMethod = trim(strtoupper(current(array_keys($aPath))));
-            \MVC\Route::$sMethod(
+            $sRouteMethod = trim(strtoupper(current(array_keys($aPath))));
+            $sOperationId = get(current($aPath)['operationId'], '');
+
+            if (true === empty($sClassMethod) && true === empty($sOperationId))
+            {
+                Error::error('operationId missing: `' . $sPath . '`, ' . $sRouteMethod);
+                return false;
+            }
+
+            \MVC\Route::$sRouteMethod(
                 $sPath,
-                '\Api\Controller\Api::delegate',
+                $sClass . '::' . ((false === empty($sClassMethod)) ? $sClassMethod : $sOperationId),
                 $sOpenApiFileAbs
             );
         }
+
+        return true;
     }
 }
