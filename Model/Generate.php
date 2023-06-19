@@ -12,7 +12,7 @@ class Generate
     /**
      * @example
      * Generate::DTClassesOnOpenapi3yaml(
-     *      'https://test.api.mediafinanz.de/api/openapi.yaml',
+     *      'https://api.example.com/api/openapi.yaml',
      *      'API'
      * );
      * @param string $sOpenApiFile required

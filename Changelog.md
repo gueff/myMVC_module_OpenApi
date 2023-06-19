@@ -23,6 +23,7 @@ Types of changes:
 
 **added**  
 
+- `\OpenApi\Model\Route::autoCreateFromOpenApiFile`: auto-creating myMVC Routes from openapi file
 - doctypes
 
 **changed**

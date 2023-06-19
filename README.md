@@ -50,6 +50,14 @@ header('Content-Type: application/json');
 echo json_encode(Convert::objectToArray($oDTValidateRequestResponse));
 ~~~
 
+_auto-creating myMVC Routes from openapi file_  
+~~~php
+\OpenApi\Model\Route::autoCreateFromOpenApiFile(
+    '/absolute/path/to/openapi.yaml'
+);
+~~~
+
+
 ## Get Logs
 
 Logs are fired to Events.
