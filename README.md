@@ -4,11 +4,14 @@
 ## Requirements
 
 - Linux
-- php >=7.4
-- myMVC
-    - myMVC 3.2.x: https://github.com/gueff/myMVC/tree/3.2.x
-    - ZIP: https://github.com/gueff/myMVC/archive/refs/heads/3.2.x.zip
-    - Doku: https://mymvc.ueffing.net/
+- php >= 8
+  - `pdo` extension
+- myMVC 3.3.x
+  - `git clone --branch 3.3.x https://github.com/gueff/myMVC.git myMVC_3.3.x`
+  - Docs: <https://mymvc.ueffing.net/>
+  - github: <https://github.com/gueff/myMVC/tree/3.3.x>
+
+---
 
 ## Installation
 
@@ -21,22 +24,24 @@ https://github.com/gueff/myMVC_module_OpenApi.git \
 OpenApi;
 ~~~
 
+---
+
 ## Usage
 
-_validate against openapi file_
+_validate against openapi **file**_
 ~~~php
 use OpenApi\Model\Validate;
 
 $oDTValidateRequestResponse = Validate::request(
     $oDTRequestCurrent,
-    Config::get_MVC_PUBLIC_PATH(). '/openapi/api.yaml'
+    Config::get_MVC_PUBLIC_PATH() . '/openapi/api.yaml'
 );
 
 header('Content-Type: application/json');
 echo json_encode(Convert::objectToArray($oDTValidateRequestResponse));
 ~~~
 
-_validate against openapi URL_
+_validate against openapi **URL**_
 ~~~php
 use OpenApi\Model\Validate;
 
@@ -55,7 +60,7 @@ echo json_encode(Convert::objectToArray($oDTValidateRequestResponse));
 _All Routes lead to their given `operationId`, set in openapi_    
 ~~~php
 \OpenApi\Model\Route::autoCreateFromOpenApiFile(
-    '/absolute/path/to/openapi.yaml',
+    Config::get_MVC_PUBLIC_PATH() . '/openapi/api.yaml',
     '\Foo\Controller\Api'
 );
 ~~~
@@ -63,12 +68,13 @@ _All Routes lead to their given `operationId`, set in openapi_
 _All Routes lead explicitely to `Api::delegate()`_      
 ~~~php
 \OpenApi\Model\Route::autoCreateFromOpenApiFile(
-    '/absolute/path/to/openapi.yaml',
+    Config::get_MVC_PUBLIC_PATH() . '/openapi/api.yaml',
     '\Foo\Controller\Api',
     'delegate'
 );
 ~~~
 
+---
 
 ## Get Logs
 

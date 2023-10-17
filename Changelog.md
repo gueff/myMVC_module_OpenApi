@@ -28,6 +28,7 @@ Types of changes:
 
 **changed**
 
+- `modules/OpenApi/etc/config/OpenApi/composer.json`: changed library versions to auto-patch level (`.*`)
 - Logs are fired to Events
 - variable names
 - "zircote/swagger-php": "4.7.10"
