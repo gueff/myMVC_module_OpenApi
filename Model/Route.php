@@ -3,7 +3,6 @@
 namespace OpenApi\Model;
 
 use HKarlstrom\OpenApiReader\OpenApiReader;
-use MVC\Debug;
 use MVC\Error;
 
 class Route
