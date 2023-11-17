@@ -7,9 +7,9 @@
 - php >= 8
   - `pdo` extension
 - myMVC 3.x
-  - `git clone --branch 3.3.x https://github.com/gueff/myMVC.git myMVC_3.3.x`
+  - `git clone --branch 3.x https://github.com/gueff/myMVC.git myMVC_3.x`
   - Docs: <https://mymvc.ueffing.net/>
-  - github: <https://github.com/gueff/myMVC/tree/3.3.x>
+  - github: <https://github.com/gueff/myMVC/tree/3.x>
 
 ---
 
