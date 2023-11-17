@@ -6,7 +6,7 @@
 - Linux
 - php >= 8
   - `pdo` extension
-- myMVC 3.3.x
+- myMVC 3.x
   - `git clone --branch 3.3.x https://github.com/gueff/myMVC.git myMVC_3.3.x`
   - Docs: <https://mymvc.ueffing.net/>
   - github: <https://github.com/gueff/myMVC/tree/3.3.x>
@@ -19,7 +19,7 @@ _git clone_
 ~~~bash
 cd /modules/;
 
-git clone --branch 1.1.x \
+git clone --branch 1.x \
 https://github.com/gueff/myMVC_module_OpenApi.git \
 OpenApi;
 ~~~

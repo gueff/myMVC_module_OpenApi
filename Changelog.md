@@ -22,6 +22,19 @@ Types of changes:
 ### In Progress
 
 **added**  
+**changed**
+**deprecated**
+**removed**  
+**fixed**  
+**security**
+
+---
+
+## [Releases]
+
+### [1.1.0] - 2023-11-17, https://github.com/gueff/myMVC_module_OpenApi/releases/tag/1.1.0
+
+**added**
 
 - `\OpenApi\Model\Route::autoCreateFromOpenApiFile`: auto-creating myMVC Routes from openapi file
 - doctypes
@@ -34,15 +47,6 @@ Types of changes:
 - "zircote/swagger-php": "4.7.10"
 - "hkarlstrom/openapi-reader": "0.5"
 - "hkarlstrom/openapi-validation-middleware": "0.5.2"
-
-**deprecated**
-**removed**  
-**fixed**  
-**security**
-
----
-
-## [Releases]
 
 ### [1.0.0] - 2023-06-19, https://github.com/gueff/myMVC_module_OpenApi/releases/tag/1.0.0
 
