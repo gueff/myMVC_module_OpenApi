@@ -32,7 +32,7 @@ class Route
         foreach ($aRawPath as $sPath => $aPath)
         {
             $sRouteMethod = trim(strtoupper(current(array_keys($aPath))));
-            $sOperationId = get(current($aPath)['operationId'], '');
+            $sOperationId = current(get(current($aPath)['operationId'], ''));
 
             if (true === empty($sClassMethod) && true === empty($sOperationId))
             {
