@@ -31,7 +31,8 @@ class Route
         foreach ($aRawPath as $sPath => $aPath)
         {
             $sRouteMethod = trim(strtoupper(current(array_keys($aPath))));
-            $sOperationId = current(get(current($aPath)['operationId'], ''));
+            $sTmp = (get(current($aPath)['operationId'], ''));
+            $sOperationId = (true === is_array($sTmp)) ? current($sTmp) : $sTmp;
 
             if (true === empty($sClassMethod) && true === empty($sOperationId))
             {
