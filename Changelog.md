@@ -23,6 +23,9 @@ Types of changes:
 
 **added**  
 **changed**
+
+- `\OpenApi\Model\PsrRequest::getParsedBody`: json_decode only if php input is string
+
 **deprecated**
 **removed**  
 **fixed**  

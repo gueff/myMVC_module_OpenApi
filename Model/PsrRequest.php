@@ -177,7 +177,16 @@ class PsrRequest implements ServerRequestInterface
             return $_POST;
         }
 
-        return json_decode(Request::getCurrentRequest()->get_input(), true);
+        if (true === is_string(Request::getCurrentRequest()->get_input()))
+        {
+            $mReturn = json_decode(Request::getCurrentRequest()->get_input(), true);
+        }
+        else
+        {
+            $mReturn = Request::getCurrentRequest()->get_input();
+        }
+
+        return $mReturn;
     }
 
     /**
