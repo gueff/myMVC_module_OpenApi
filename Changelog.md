@@ -24,6 +24,7 @@ Types of changes:
 **added**  
 **changed**
 
+- `\OpenApi\Model\Route::autoCreateFromOpenApiFile`: handling multiple RequestMethods (e.g. put|patch) for same Route
 - `\OpenApi\Model\PsrRequest::getParsedBody`: json_decode only if php input is string
 
 **deprecated**

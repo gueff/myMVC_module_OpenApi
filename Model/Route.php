@@ -30,21 +30,23 @@ class Route
         // finally: dynamically create routes from openapi
         foreach ($aRawPath as $sPath => $aPath)
         {
-            $sRouteMethod = trim(strtoupper(current(array_keys($aPath))));
-            $sTmp = (get(current($aPath)['operationId'], ''));
-            $sOperationId = (true === is_array($sTmp)) ? current($sTmp) : $sTmp;
-
-            if (true === empty($sClassMethod) && true === empty($sOperationId))
+            foreach ($aPath as $sRouteMethod => $aSpec)
             {
-                Error::error('operationId missing: `' . $sPath . '`, ' . $sRouteMethod);
-                return false;
-            }
+                $sTmp = (get($aSpec['operationId'], ''));
+                $sOperationId = (true === is_array($sTmp)) ? current($sTmp) : $sTmp;
 
-            \MVC\Route::$sRouteMethod(
-                $sPath,
-                $sClass . '::' . ((false === empty($sClassMethod)) ? $sClassMethod : $sOperationId),
-                $sOpenApiFileAbs
-            );
+                if (true === empty($sClassMethod) && true === empty($sOperationId))
+                {
+                    Error::error('operationId missing: `' . $sPath . '`, ' . $sRouteMethod);
+                    return false;
+                }
+
+                \MVC\Route::$sRouteMethod(
+                    $sPath,
+                    $sClass . '::' . ((false === empty($sClassMethod)) ? $sClassMethod : $sOperationId),
+                    $sOpenApiFileAbs
+                );
+            }
         }
 
         return true;
